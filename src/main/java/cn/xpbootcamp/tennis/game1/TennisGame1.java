@@ -23,21 +23,21 @@ public class TennisGame1 implements TennisGame {
 
     public String getScore() {
         if (m_score1 == m_score2)
-            return buildScoreWhenEqual(m_score1);
+            return getScoreWhenEqual(m_score1);
         if (m_score1 >= 4 || m_score2 >= 4)
-            return buildScoreWhenBothGreaterThan4();
-        return buildScoreForNormalCase();
+            return getScoreWhenBothGreaterThanOrEqual4();
+        return getScoreForBothLessThan4();
     }
 
-    private String buildScoreForNormalCase() {
+    private String getScoreForBothLessThan4() {
         StringBuilder score = new StringBuilder();
-        score.append(buildScoreWhenBothLessThan3(m_score1));
+        score.append(buildScore(m_score1));
         score.append("-");
-        score.append(buildScoreWhenBothLessThan3(m_score2));
+        score.append(buildScore(m_score2));
         return score.toString();
     }
 
-    private String buildScoreWhenBothLessThan3(int score) {
+    private String buildScore(int score) {
         switch (score) {
             case 0:
                 return "Love";
@@ -50,18 +50,26 @@ public class TennisGame1 implements TennisGame {
         }
     }
 
-    private String buildScoreWhenBothGreaterThan4() {
+    private String getScoreWhenBothGreaterThanOrEqual4() {
         int minusResult = m_score1 - m_score2;
         if (minusResult == 1)
-            return "Advantage " + player1Name;
+            return buildAdvantage(player1Name);
         if (minusResult == -1)
-            return "Advantage " + player2Name;
+            return buildAdvantage(player2Name);
         if (minusResult >= 2)
-            return "Win for " + player1Name;
-        return "Win for " + player2Name;
+            return buildWinFor(player1Name);
+        return buildWinFor(player2Name);
     }
 
-    private String buildScoreWhenEqual(int score) {
+    private String buildAdvantage(String playerName) {
+        return "Advantage " + playerName;
+    }
+
+    private String buildWinFor(String playerName) {
+        return "Win for " + playerName;
+    }
+
+    private String getScoreWhenEqual(int score) {
         switch (score) {
             case 0:
                 return "Love-All";
